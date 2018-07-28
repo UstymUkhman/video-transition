@@ -1,0 +1,65 @@
+<!Doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Video Transition</title>
+
+    <script type="text/javascript" src="curtains.min.js"></script>
+    <script type="text/javascript" src="VideoTransition.js"></script>
+
+    <style type="text/css">
+      html, body, video, #webgl {
+        background-color: #000;
+        position: absolute;
+        overflow: hidden;
+
+        height: 100%;
+        width: 100%;
+
+        padding: 0;
+        margin: 0;
+
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+      }
+
+      #plane {
+        position: absolute;
+        margin: auto;
+
+        height: 45vw;
+        width: 80vw;
+
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+      }
+
+      img, video {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="webgl"></div>
+
+    <div id="plane">
+      <img src="./assets/noise.jpg" data-sampler="displacement" />
+
+      <video id="video-1" src="./assets/video-1.mp4" data-sampler="firstTexture"></video>
+      <video id="video-2" src="./assets/video-2.mp4" data-sampler="secondTexture"></video>
+    </div>
+
+    <script type="text/javascript">
+      var transition = new VideoTransition();
+      window.addEventListener('resize', transition.onResize.bind(transition));
+    </script>
+  </body>
+</html>
