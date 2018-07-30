@@ -3,67 +3,46 @@ export default class VideoTransition {
     this.planeElement = document.getElementById('plane');
     this.pixelRatio = window.devicePixelRatio || 1.0;
 
-    // this.mouseLastPosition = { x: 0, y: 0 };
-    this.mousePosition = { x: 0, y: 0 };
-    // this.mouseDelta = 0;
-
-    this.maxRadius = 300;
-    this.minRadius = 100;
-    this.radius = 120;
-
     this.secondVideoReady = false;
     this.firstVideoReady = false;
-    this.firstVideoReady = false;
 
-    // this.transitionTimer = 0;
-    this.activeTexture = 1;
+    this.activeTexture = false;
+    this.transitionTimer = 0;
 
     this.plane = new Curtains('webgl').addPlane(this.planeElement, {
       fragmentShader: require('./glsl/transition.frag'),
       vertexShader: require('./glsl/transition.vert'),
 
       uniforms: {
-        mousePosition: {
-          name: 'mousePosition',
-          type: '2f',
-          value: [
-            this.mousePosition.x,
-            this.mousePosition.y
-          ]
+        minRadius: {
+          value: this.planeElement.clientWidth / 30,
+          name: 'minRadius',
+          type: '1f'
         },
 
         maxRadius: {
-          value: this.maxRadius,
+          value: this.planeElement.clientWidth / 5,
           name: 'maxRadius',
           type: '1f'
         },
 
-        minRadius: {
-          value: this.minRadius,
-          name: 'minRadius',
-          type: '1f'
+        transitionTimer: {
+          name: 'transitionTimer',
+          type: '1f',
+          value: 0,
+        },
+
+        mousePosition: {
+          name: 'mousePosition',
+          value: [0, 0],
+          type: '2f'
+        },
+
+        resolution: {
+          name: 'resolution',
+          value: [0, 0],
+          type: '2f'
         }
-
-        // transitionTimer: {
-        //   name: 'transitionTimer',
-        //   type: '1f',
-        //   value: 0,
-        // },
-
-        // resolution: {
-        //   name: 'resolution',
-        //   type: '2f',
-        //   value: [
-        //     this.pixelRatio * this.planeElement.clientWidth,
-        //     this.pixelRatio * this.planeElement.clientHeight
-        //   ]
-        // },
-
-        // time: {
-        //   name: 'time',
-        //   type: '1f',
-        //   value: 0
-        // }
       }
     });
 
@@ -73,8 +52,25 @@ export default class VideoTransition {
   }
 
   onPlaneReady () {
+    this.onResize();
     this.plane.setPerspective(35);
+
     this.planeElement.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.planeElement.addEventListener('mouseup', this.toggleActiveTexture.bind(this));
+    this.planeElement.addEventListener('mousedown', this.toggleActiveTexture.bind(this));
+  }
+
+  toggleActiveTexture (event) {
+    this.activeTexture = !this.activeTexture
+  }
+
+  onMouseMove (event) {
+    this.plane.uniforms.mousePosition.value = [event.clientX, this.planeElement.clientHeight + 120 - event.clientY];
+  }
+
+  onPlaneRender () {
+    this.transitionTimer = this.activeTexture ? Math.min(90, this.transitionTimer + 1) : Math.max(0, this.transitionTimer - 1);
+    this.plane.uniforms.transitionTimer.value = this.transitionTimer;
   }
 
   onReady (event) {
@@ -91,41 +87,10 @@ export default class VideoTransition {
     }
   }
 
-  onPlaneRender () {
-    // this.plane.uniforms.mouseMoveStrength.value = this.mouseDelta;
-    // this.mouseDelta = Math.max(0, this.mouseDelta * 0.995);
-
-    // if(this.activeTexture === 1) {
-    //   this.transitionTimer = Math.max(0, this.transitionTimer - 1);
-    // } else {
-    //   this.transitionTimer = Math.min(90, this.transitionTimer + 1);
-    // }
-
-    // this.plane.uniforms.transitionTimer.value = this.transitionTimer;
-  }
-
-  onMouseMove (event) {
-    // this.mouseLastPosition.x = this.mousePosition.x;
-    // this.mouseLastPosition.y = this.mousePosition.y;
-
-    this.mousePosition.x = event.clientX;
-    this.mousePosition.y = this.planeElement.clientHeight + this.radius - event.clientY;
-    this.plane.uniforms.mousePosition.value = [this.mousePosition.x, this.mousePosition.y];
-
-    // if (this.mouseLastPosition.x && this.mouseLastPosition.y) {
-    //   const delta = Math.min(4, Math.sqrt(
-    //     Math.pow(this.mousePosition.x - this.mouseLastPosition.x, 2) +
-    //     Math.pow(this.mousePosition.y - this.mouseLastPosition.y, 2)
-    //   ) / 30);
-
-    //   if (delta >= this.mouseDelta) {
-    //     this.mouseDelta = delta;
-    //     this.plane.uniforms.time.value = 0;
-    //   }
-    // }
-  }
-
   onResize () {
+    this.plane.uniforms.minRadius.value = this.planeElement.clientWidth / 30;
+    this.plane.uniforms.maxRadius.value = this.planeElement.clientWidth / 5;
+
     this.plane.uniforms.resolution.value = [
       this.pixelRatio * this.planeElement.clientWidth,
       this.pixelRatio * this.planeElement.clientHeight
