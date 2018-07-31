@@ -20,7 +20,7 @@ void main (void) {
 
   vec2 secondDisplacementCoords = vec2(vTextureCoord.x - (1.0 - displacementFactor) * (displacementTexture.r * 1.0), vTextureCoord.y);
   vec2 firstDisplacementCoords  = vec2(vTextureCoord.x + displacementFactor * (displacementTexture.r * 1.0), vTextureCoord.y);
-  vec2 displacementCoords       = (gl_FragCoord.x < resolution.x / 2.0) ? firstDisplacementCoords : secondDisplacementCoords;
+  vec2 displacementCoords       = (mousePosition.x < resolution.x / 2.0) ? firstDisplacementCoords : secondDisplacementCoords;
 
   vec4 displacementColor  = texture2D(displacement, displacementCoords);
   vec4 secondTextureColor = texture2D(secondTexture, vTextureCoord);
