@@ -206,5 +206,7 @@ export default class VideoTransition {
     this.offsetTop = (window.innerHeight - height);
     this.planeElement.style.height = `${height}px`;
     this.planeElement.style.width = `${width}px`;
+
+    this.plane.planeResize();
   }
 }
