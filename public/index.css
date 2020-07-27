@@ -1,0 +1,118 @@
+html,
+body {
+  -webkit-text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  font-variant-ligatures: none;
+  font-family: sans-serif;
+  text-size-adjust: 100%;
+  font-style: normal;
+  font-kerning: none;
+  font-weight: 400;
+  font-size: 16px;
+
+  background-color: #000000;
+  letter-spacing: normal;
+  line-height: normal;
+  overflow: hidden;
+
+  height: 100%;
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  left: 0;
+  top: 0;
+}
+
+#canvas {
+  pointer-events: none;
+  position: absolute;
+  display: block;
+
+  height: 100%;
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  left: 0;
+  top: 0;
+}
+
+#start {
+  transition: background-color 0.5s, color 0.5s, opacity 0.5s;
+  font-family: monospace, sans-serif;
+  background-color: #000000;
+  border: solid 1px #00cc00;
+  text-transform: uppercase;
+
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-align: center;
+
+  position: absolute;
+  line-height: 26px;
+  padding: 4px 20px;
+  border-radius: 0;
+
+  color: #00cc00;
+  font-weight: 300;
+  font-size: 20px;
+
+  cursor: pointer;
+  margin: auto;
+
+  height: 35px;
+  width: 150px;
+
+  z-index: 1;
+  outline: 0;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+#start:hover {
+  background-color: #00cc00;
+  color: #000000;
+}
+
+#start.disabled {
+  pointer-events: none;
+  opacity: 0;
+}
+
+#plane {
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s 0.5s;
+
+  pointer-events: none;
+  position: absolute;
+
+  margin: auto;
+  opacity: 0;
+
+  height: 100%;
+  width: 100%;
+
+  left: 50%;
+  top: 50%;
+}
+
+#plane.visible {
+  pointer-events: all;
+  cursor: grab;
+  opacity: 1;
+}
+
+#plane img,
+#plane video {
+  display: none;
+}

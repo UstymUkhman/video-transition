@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#000000">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="./index.css">
+    <title>Video Transition</title>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <button id="start">Start</button>
+
+    <div id="plane">
+      <img src="./assets/noise.jpg" data-sampler="displacement" />
+
+      <video id="first" src="./assets/sky.mp4" data-sampler="first" preload="auto" autoload muted loop></video>
+      <video id="second" src="./assets/lake.mp4" data-sampler="second" preload="auto" autoload muted loop></video>
+    </div>
+
+    <script type="text/javascript" src="./index.js"></script>
+  </body>
+</html>
